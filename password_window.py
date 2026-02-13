@@ -391,7 +391,7 @@ def show_password_window(root):
         nonlocal abebe
 
         pwd = entry.get().strip()
-        abebe.on_user_input(pwd)
+        
         
 
         # ===== КОМАНДЫ =====
