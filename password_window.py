@@ -12,6 +12,7 @@ from minigame_pinball import start_pinball
 from background_music import play_music, stop_music, resume_music
 from trust_system import TrustSystem
 from abebe_watcher import AbebeWatcher
+from hack_decoder import show_hack_decoder
 
 from trust_system import TrustSystem
 from abebe_watcher import AbebeWatcher
@@ -154,6 +155,26 @@ def show_history_window(root):
             bg="black",
             font=("Consolas", 12)
         ).pack(anchor="w", padx=20)
+
+def show_hack_hint_window(root):
+    win, content = create_styled_window(root, "HELPER.EXE", 300, 160)
+
+    tk.Label(
+        content,
+        text="SYSTEM TIP",
+        fg="lime",
+        bg="black",
+        font=("Terminal", 14)
+    ).pack(pady=15)
+
+    tk.Label(
+        content,
+        text="Type command:\n\n!hack",
+        fg="white",
+        bg="black",
+        font=("Consolas", 12),
+        justify="center"
+    ).pack(pady=10)
 
 import tkinter as tk
 import winsound
@@ -314,6 +335,7 @@ def show_password_window(root):
 
     trust = TrustSystem(root)
     abebe = AbebeWatcher(root, trust)
+    current_theme = abebe.get_current_theme()
     
     
     tk.Label(
@@ -366,6 +388,25 @@ def show_password_window(root):
         cursor="hand2"
     )
     eye_btn.pack(side="left", padx=6)
+    
+    def show_hint():
+        show_hack_hint_window(root)
+
+    hint_btn = tk.Button(
+        entry_frame,
+        text="?",
+        command=show_hint,
+        bg="black",
+        fg="yellow",
+        activebackground="black",
+        activeforeground="lime",
+        relief="flat",
+        font=("Terminal", 14, "bold"),
+        cursor="hand2",
+        width=2
+    )
+    hint_btn.pack(side="left", padx=4)
+
 
     # ===== СТАТУС =====
     status_label = tk.Label(
@@ -432,6 +473,11 @@ def show_password_window(root):
                 abebe.destroy()
                 abebe = AbebeWatcher(root, trust)
                 status_label.config(text="Game reset!")
+            
+            elif pwd == "!hack":
+                show_hack_decoder(root, abebe.get_current_theme())
+
+
 
             # ===== SOUND =====
             elif pwd.startswith("!sound"):

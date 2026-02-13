@@ -65,6 +65,8 @@ class AbebeWatcher:
         self.frames = []
         self.frame_index = 0
         self.shake_job = None
+        
+        self.setup_topics()
 
         self._create_window()
         self._create_text_window()
@@ -258,31 +260,33 @@ class AbebeWatcher:
         self.current_topic = random.choice(self.topics)
         
         
+    def get_current_theme(self):
+        return self.current_topic["name"]
 
 
-def on_user_input(self, text):
-    text = text.lower()
+    def on_user_input(self, text):
+        text = text.lower()
 
-    if not hasattr(self, "topics"):
-        self.setup_topics()
-        self.show_dialog(f"Topic selected: {self.current_topic['name']}")
+        if not hasattr(self, "topics"):
+            self.setup_topics()
+            self.show_dialog(f"Topic selected: {self.current_topic['name']}")
 
-    good = self.current_topic["good"]
-    bad = self.current_topic["bad"]
+        good = self.current_topic["good"]
+        bad = self.current_topic["bad"]
 
-    if any(w in text for w in good):
-        self.trust_system.add_trust(10)
-        self.show_dialog("Accepted.")
+        if any(w in text for w in good):
+            self.trust_system.add_trust(10)
+            self.show_dialog("Accepted.")
 
-    elif any(w in text for w in bad):
-        self.trust_system.add_suspicion(15)
-        self.show_dialog("Suspicious input detected.")
+        elif any(w in text for w in bad):
+            self.trust_system.add_suspicion(15)
+            self.show_dialog("Suspicious input detected.")
 
-    else:
-        self.trust_system.add_suspicion(4)
-        self.show_dialog("Unknown response.")
+        else:
+            self.trust_system.add_suspicion(4)
+            self.show_dialog("Unknown response.")
 
-    self.update_state()
+        self.update_state()
 
     # ===================== ЗАКРЫТИЕ =====================
     def destroy(self):
@@ -290,3 +294,4 @@ def on_user_input(self, text):
             self.win.destroy()
         if self.text_win.winfo_exists():
             self.text_win.destroy()
+            
