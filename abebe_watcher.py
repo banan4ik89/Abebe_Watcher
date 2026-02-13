@@ -256,9 +256,8 @@ class AbebeWatcher:
         ]
 
         self.current_topic = random.choice(self.topics)
-        self.topic_name = self.current_topic["name"]
-        def get_topic(self):
-            return getattr(self, "topic_name", "UNKNOWN")
+        
+        
 
 
 def on_user_input(self, text):

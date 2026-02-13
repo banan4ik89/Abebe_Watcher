@@ -392,7 +392,7 @@ def show_password_window(root):
 
         pwd = entry.get().strip()
         abebe.on_user_input(pwd)
-        confirm_btn.config(state="disabled")
+        
 
         # ===== КОМАНДЫ =====
         if pwd.startswith("!"):
