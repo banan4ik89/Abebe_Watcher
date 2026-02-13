@@ -98,7 +98,13 @@ class DialogSystem:
 
     # ===================== TEXT =====================
     def show(self, text):
-        self.text_label.config(text=text)
+        prefix = {
+            "neutral": "[SYS] ",
+            "happy": "[OK] ",
+            "angry": "[WARNING] "
+        }
+
+        self.text_label.config(text=prefix[self.state] + text)
 
     # ===================== SHAKE EFFECT =====================
     def start_shake(self):

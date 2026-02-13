@@ -1,134 +1,166 @@
 # trust_system.py
-import time
+import tkinter as tk
 
-# ===================== ТЕМЫ И СЛОВА =====================
-THEMES = {
-    "security": {
-        "good": [
-            "access", "protocol", "secure", "password",
-            "authorization", "verification", "encrypted"
-        ],
-        "bad": [
-            "hack", "crack", "bypass", "exploit", "steal"
-        ]
-    },
-    "company": {
-        "good": [
-            "employee", "department", "archive",
-            "system", "database", "internal"
-        ],
-        "bad": [
-            "intruder", "spy", "leak", "traitor"
-        ]
-    },
-    "abebe": {
-        "good": [
-            "abebe", "assistant", "helper", "guardian"
-        ],
-        "bad": [
-            "virus", "fake", "stupid", "bot"
-        ]
-    }
-}
 
-# ===================== КЛАСС СИСТЕМЫ =====================
+# ===================== DRAG =====================
+def make_draggable(win, bar):
+    def start(e):
+        win.x = e.x
+        win.y = e.y
+
+    def move(e):
+        win.geometry(f"+{e.x_root - win.x}+{e.y_root - win.y}")
+
+    bar.bind("<Button-1>", start)
+    bar.bind("<B1-Motion>", move)
+
+
+# ===================== TRUST SYSTEM =====================
 class TrustSystem:
-    def __init__(self):
-        self.trust = 0
+    def __init__(self, root):
+        self.trust = 50
         self.suspicion = 0
-
-        self.history = []          # история введённых слов
-        self.last_input_time = 0   # для анти-спама
-
         self.max_value = 100
 
-    # ===================== АНАЛИЗ ВВОДА =====================
-    def analyze_input(self, text: str) -> str:
-        """
-        Возвращает:
-        'trust' | 'suspicion' | 'neutral'
-        """
-        text = text.lower().strip()
+        # ================= WINDOW =================
+        self.win = tk.Toplevel(root)
+        self.win.overrideredirect(True)
+        self.win.configure(bg="black")
+        self.win.transient(root)
+        self.win.lift()
+        self.win.attributes("-topmost", True)
 
-        # пустой ввод — подозрительно
-        if not text:
-            return "suspicion"
+        self.win.geometry("320x140+30+520")
 
-        # повтор слова — подозрительно
-        if text in self.history:
-            return "suspicion"
+        # ================= TITLE BAR =================
+        title_bar = tk.Frame(self.win, bg="#C0C0C0", height=26)
+        title_bar.pack(fill="x", side="top")
 
-        # слишком быстрый ввод (спам)
-        now = time.time()
-        if now - self.last_input_time < 0.8:
-            return "suspicion"
+        tk.Label(
+            title_bar,
+            text="TRUST_MONITOR.EXE",
+            bg="#C0C0C0",
+            fg="black",
+            font=("Terminal", 10)
+        ).pack(side="left", padx=6)
 
-        # анализ по темам
-        for theme_name, theme in THEMES.items():
-            if text in theme["good"]:
-                return "trust"
-            if text in theme["bad"]:
-                return "suspicion"
+        make_draggable(self.win, title_bar)
 
-        return "neutral"
+        # ================= CONTENT =================
+        content = tk.Frame(
+            self.win,
+            bg="black",
+            highlightbackground="lime",
+            highlightthickness=2
+        )
+        content.pack(expand=True, fill="both", padx=6, pady=6)
 
-    # ===================== ПРИМЕНЕНИЕ РЕЗУЛЬТАТА =====================
-    def apply_result(self, result: str):
-        if result == "trust":
-            self.trust += 15
-            self.suspicion -= 5
+        # ---------- TRUST ----------
+        trust_row = tk.Frame(content, bg="black")
+        trust_row.pack(fill="x", pady=6)
 
-        elif result == "suspicion":
-            self.suspicion += 20
-            self.trust -= 5
+        tk.Label(
+            trust_row,
+            text="TRUST",
+            fg="lime",
+            bg="black",
+            font=("Terminal", 10)
+        ).pack(side="left")
 
-        elif result == "neutral":
-            self.suspicion += 5
+        self.trust_percent = tk.Label(
+            trust_row,
+            text="50%",
+            fg="lime",
+            bg="black",
+            font=("Consolas", 10)
+        )
+        self.trust_percent.pack(side="right")
 
+        self.trust_bar = tk.Canvas(
+            content,
+            height=14,
+            bg="#111",
+            highlightthickness=1,
+            highlightbackground="lime"
+        )
+        self.trust_bar.pack(fill="x")
+
+        # ---------- SUSPICION ----------
+        susp_row = tk.Frame(content, bg="black")
+        susp_row.pack(fill="x", pady=(10, 6))
+
+        tk.Label(
+            susp_row,
+            text="SUSPICION",
+            fg="red",
+            bg="black",
+            font=("Terminal", 10)
+        ).pack(side="left")
+
+        self.susp_percent = tk.Label(
+            susp_row,
+            text="0%",
+            fg="red",
+            bg="black",
+            font=("Consolas", 10)
+        )
+        self.susp_percent.pack(side="right")
+
+        self.susp_bar = tk.Canvas(
+            content,
+            height=14,
+            bg="#111",
+            highlightthickness=1,
+            highlightbackground="red"
+        )
+        self.susp_bar.pack(fill="x")
+
+        self.update_ui()
+
+    # ===================== LOGIC =====================
+
+    def add_trust(self, value):
+        self.trust += value
+        self.suspicion -= value // 2
         self._clamp()
+        self.update_ui()
 
-    # ===================== ОСНОВНОЙ МЕТОД =====================
-    def process_input(self, text: str) -> str:
-        """
-        Главный метод:
-        - анализирует ввод
-        - изменяет шкалы
-        - сохраняет историю
-        - возвращает результат
-        """
-        result = self.analyze_input(text)
-        self.apply_result(result)
+    def add_suspicion(self, value):
+        self.suspicion += value
+        self.trust -= value // 2
+        self._clamp()
+        self.update_ui()
 
-        self.history.append(text.lower())
-        self.last_input_time = time.time()
+    def is_suspicious(self):
+        return self.suspicion >= 70
 
-        return result
+    # ===================== UI =====================
 
-    # ===================== СОСТОЯНИЯ =====================
-    def is_trusted(self) -> bool:
-        return self.trust >= self.max_value
+    def update_ui(self):
+        w = 280  # ширина полос
 
-    def is_suspicious(self) -> bool:
-        return self.suspicion >= self.max_value
+        self.trust_bar.delete("all")
+        self.susp_bar.delete("all")
 
-    def get_state(self) -> str:
-        """
-        Возвращает текущее состояние для AbebeWatcher:
-        'happy' | 'angry' | 'neutral'
-        """
-        if self.is_suspicious():
-            return "angry"
-        elif self.trust >= 70:
-            return "happy"
-        else:
-            return "neutral"
+        self.trust_bar.create_rectangle(
+            0, 0, w * (self.trust / 100), 14,
+            fill="lime", outline=""
+        )
 
-    # ===================== ВНУТРЕННЕЕ =====================
+        self.susp_bar.create_rectangle(
+            0, 0, w * (self.suspicion / 100), 14,
+            fill="red", outline=""
+        )
+
+        self.trust_percent.config(text=f"{self.trust}%")
+        self.susp_percent.config(text=f"{self.suspicion}%")
+
+    # ===================== INTERNAL =====================
+
     def _clamp(self):
         self.trust = max(0, min(self.max_value, self.trust))
         self.suspicion = max(0, min(self.max_value, self.suspicion))
 
-    # ===================== ОТЛАДКА =====================
-    def debug_state(self) -> str:
-        return f"TRUST={self.trust}% | SUSPICION={self.suspicion}%"
-
+    def destroy(self):
+        if self.win.winfo_exists():
+            self.win.destroy()

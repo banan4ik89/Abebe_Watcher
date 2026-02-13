@@ -2,6 +2,7 @@
 import tkinter as tk
 import random
 import os
+import random
 
 from utils import get_exe_dir
 from config import DATA_DIR
@@ -225,9 +226,64 @@ class AbebeWatcher:
         self.text_label.pack(padx=10, pady=10, anchor="center")
 
     # ===================== ВНЕШНИЙ ВЫЗОВ =====================
-    def on_user_input(self, text):
-        self.update_state()
-        self.show_dialog()
+    def setup_topics(self):
+        self.topics = [
+            {
+                "name": "OFFICE",
+                "good": ["employee", "report", "manager", "meeting", "system"],
+                "bad": ["hack", "virus", "steal", "bypass", "root"]
+            },
+            {
+                "name": "SECURITY",
+                "good": ["password", "access", "confirm", "login", "verify"],
+                "bad": ["intruder", "break", "exploit", "attack", "override"]
+            },
+            {
+                "name": "PSYCHO",
+                "good": ["friend", "help", "trust", "calm", "safe"],
+                "bad": ["kill", "escape", "fear", "panic", "hide"]
+            },
+            {
+                "name": "HACKER",
+                "good": ["terminal", "protocol", "database", "server", "network"],
+                "bad": ["breach", "inject", "payload", "malware", "spyware"]
+            },
+            {
+                "name": "PERSONAL",
+                "good": ["name", "birthday", "city", "family", "home"],
+                "bad": ["unknown", "fake", "lie", "mask", "stranger"]
+            }
+        ]
+
+        self.current_topic = random.choice(self.topics)
+        self.topic_name = self.current_topic["name"]
+        def get_topic(self):
+            return getattr(self, "topic_name", "UNKNOWN")
+
+
+def on_user_input(self, text):
+    text = text.lower()
+
+    if not hasattr(self, "topics"):
+        self.setup_topics()
+        self.show_dialog(f"Topic selected: {self.current_topic['name']}")
+
+    good = self.current_topic["good"]
+    bad = self.current_topic["bad"]
+
+    if any(w in text for w in good):
+        self.trust_system.add_trust(10)
+        self.show_dialog("Accepted.")
+
+    elif any(w in text for w in bad):
+        self.trust_system.add_suspicion(15)
+        self.show_dialog("Suspicious input detected.")
+
+    else:
+        self.trust_system.add_suspicion(4)
+        self.show_dialog("Unknown response.")
+
+    self.update_state()
 
     # ===================== ЗАКРЫТИЕ =====================
     def destroy(self):

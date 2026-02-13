@@ -10,7 +10,8 @@ from fake_hack import start_fake_hack
 from good_end import show_good_end
 from minigame_pinball import start_pinball
 from background_music import play_music, stop_music, resume_music
-
+from trust_system import TrustSystem
+from abebe_watcher import AbebeWatcher
 
 from trust_system import TrustSystem
 from abebe_watcher import AbebeWatcher
@@ -311,9 +312,10 @@ def show_password_window(root):
 
     win, content = create_styled_window(root, "PASSWORD_CHECK.EXE", 360, 300)
 
-    trust = TrustSystem()
+    trust = TrustSystem(root)
     abebe = AbebeWatcher(root, trust)
-
+    
+    
     tk.Label(
         content,
         text="ENTER PASSWORD",
@@ -340,7 +342,7 @@ def show_password_window(root):
         width=18
     )
     entry.pack(side="left")
-    entry.focus()
+    
 
     # ===== ГЛАЗ =====
     show_password = False
@@ -389,6 +391,7 @@ def show_password_window(root):
         nonlocal abebe
 
         pwd = entry.get().strip()
+        abebe.on_user_input(pwd)
         confirm_btn.config(state="disabled")
 
         # ===== КОМАНДЫ =====
