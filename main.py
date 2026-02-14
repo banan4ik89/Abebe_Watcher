@@ -1,3 +1,9 @@
+# Project: Abebe Watcher(ABEBE_PROTOCOL)
+# Author: Denis Kravchenko
+# Started: Feb 10, 2026
+# All assets, story, design, and main game logic by the author.
+# Some helper code assisted by AI.
+
 import tkinter as tk
 from utils import block_esc
 from password_window import show_password_window
