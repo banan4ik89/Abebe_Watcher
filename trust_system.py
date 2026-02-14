@@ -1,8 +1,8 @@
-# trust_system.py
+
 import tkinter as tk
 
 
-# ===================== DRAG =====================
+
 def make_draggable(win, bar):
     def start(e):
         win.x = e.x
@@ -15,14 +15,14 @@ def make_draggable(win, bar):
     bar.bind("<B1-Motion>", move)
 
 
-# ===================== TRUST SYSTEM =====================
+
 class TrustSystem:
     def __init__(self, root):
         self.trust = 50
         self.suspicion = 0
         self.max_value = 100
 
-        # ================= WINDOW =================
+        
         self.win = tk.Toplevel(root)
         self.win.overrideredirect(True)
         self.win.configure(bg="black")
@@ -32,7 +32,7 @@ class TrustSystem:
 
         self.win.geometry("320x140+30+520")
 
-        # ================= TITLE BAR =================
+        
         title_bar = tk.Frame(self.win, bg="#C0C0C0", height=26)
         title_bar.pack(fill="x", side="top")
 
@@ -46,7 +46,7 @@ class TrustSystem:
 
         make_draggable(self.win, title_bar)
 
-        # ================= CONTENT =================
+        
         content = tk.Frame(
             self.win,
             bg="black",
@@ -55,7 +55,7 @@ class TrustSystem:
         )
         content.pack(expand=True, fill="both", padx=6, pady=6)
 
-        # ---------- TRUST ----------
+        
         trust_row = tk.Frame(content, bg="black")
         trust_row.pack(fill="x", pady=6)
 
@@ -85,7 +85,7 @@ class TrustSystem:
         )
         self.trust_bar.pack(fill="x")
 
-        # ---------- SUSPICION ----------
+        
         susp_row = tk.Frame(content, bg="black")
         susp_row.pack(fill="x", pady=(10, 6))
 
@@ -117,7 +117,7 @@ class TrustSystem:
 
         self.update_ui()
 
-    # ===================== LOGIC =====================
+    
 
     def add_trust(self, value):
         self.trust += value
@@ -134,10 +134,10 @@ class TrustSystem:
     def is_suspicious(self):
         return self.suspicion >= 70
 
-    # ===================== UI =====================
+    
 
     def update_ui(self):
-        w = 280  # ширина полос
+        w = 280 
 
         self.trust_bar.delete("all")
         self.susp_bar.delete("all")
@@ -155,7 +155,7 @@ class TrustSystem:
         self.trust_percent.config(text=f"{self.trust}%")
         self.susp_percent.config(text=f"{self.suspicion}%")
 
-    # ===================== INTERNAL =====================
+    
 
     def _clamp(self):
         self.trust = max(0, min(self.max_value, self.trust))

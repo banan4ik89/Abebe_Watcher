@@ -1,7 +1,7 @@
 import tkinter as tk
 import random
 
-# ===================== ПЕРЕТАСКИВАНИЕ =====================
+
 def make_draggable(win, bar):
     def start(e):
         win.x = e.x
@@ -14,11 +14,11 @@ def make_draggable(win, bar):
     bar.bind("<B1-Motion>", move)
 
 
-# ===================== DIALOG SYSTEM =====================
+
 class DialogSystem:
     def __init__(self, root, title="ABEBE_WATCHER.EXE"):
         self.root = root
-        self.state = "neutral"  # neutral | happy | angry
+        self.state = "neutral"
         self.shake_job = None
 
         self.win = tk.Toplevel(root)
@@ -31,7 +31,7 @@ class DialogSystem:
         sh = root.winfo_screenheight()
         self.win.geometry(f"{w}x{h}+{sw//2 + 200}+{sh//2 - 120}")
 
-        # ===================== TITLE BAR =====================
+        
         self.title_bar = tk.Frame(self.win, bg="#C0C0C0", height=26)
         self.title_bar.pack(fill="x", side="top")
 
@@ -59,7 +59,7 @@ class DialogSystem:
 
         make_draggable(self.win, self.title_bar)
 
-        # ===================== CONTENT =====================
+        
         self.content = tk.Frame(
             self.win,
             bg="black",
@@ -80,7 +80,7 @@ class DialogSystem:
         )
         self.text_label.pack(padx=10, pady=10, anchor="nw")
 
-    # ===================== STATE =====================
+    
     def set_state(self, state):
         self.state = state
 
@@ -96,7 +96,7 @@ class DialogSystem:
             self.text_label.config(fg="red")
             self.start_shake()
 
-    # ===================== TEXT =====================
+    
     def show(self, text):
         prefix = {
             "neutral": "[SYS] ",
@@ -106,7 +106,7 @@ class DialogSystem:
 
         self.text_label.config(text=prefix[self.state] + text)
 
-    # ===================== SHAKE EFFECT =====================
+    
     def start_shake(self):
         if self.shake_job:
             return
@@ -131,7 +131,7 @@ class DialogSystem:
             self.win.after_cancel(self.shake_job)
             self.shake_job = None
 
-    # ===================== DESTROY =====================
+    
     def destroy(self):
         self.stop_shake()
         self.win.destroy()

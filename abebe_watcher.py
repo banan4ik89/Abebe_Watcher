@@ -287,6 +287,14 @@ class AbebeWatcher:
             self.show_dialog("Unknown response.")
 
         self.update_state()
+    
+    def check_word(self, word):
+        theme = self.get_current_theme()
+        if word in THEMES[theme]["good"]:
+            return "good"
+        elif word in THEMES[theme]["bad"]:
+            return "bad"
+        return None
 
     # ===================== ЗАКРЫТИЕ =====================
     def destroy(self):

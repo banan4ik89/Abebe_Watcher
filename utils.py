@@ -3,7 +3,7 @@ import sys
 
 def get_exe_dir():
     if getattr(sys, 'frozen', False):
-        return sys._MEIPASS      # для --onefile
+        return sys._MEIPASS      
     return os.path.dirname(os.path.abspath(__file__))
 
 def block_esc(widget):

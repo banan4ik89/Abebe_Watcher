@@ -11,7 +11,7 @@ GIF_NAME = "laugh.gif"
 SOUND_NAME = "laugh.wav"
 
 
-# === ПУБЛИЧНЫЙ ВХОД ===
+
 def start_fake_hack(root):
     fake_scanning(root, lambda:
         fake_deleting(root, lambda:
@@ -108,7 +108,7 @@ def show_fake_ip(root):
     win.after(3000, lambda: (win.destroy(), show_hack_screen(root)))
 
 
-# === ХАОС ===
+
 
 def show_hack_screen(root):
     bg = tk.Toplevel(root)
@@ -161,7 +161,7 @@ def show_hack_screen(root):
 
     bg.after(10000, finish)
 
-# === СУБТИТРЫ ДЛЯ GIF ===
+
 GIF_SUBTITLES = [
     (0,    "Ha...", False),
     (800,  "Ha...", False),
@@ -198,7 +198,7 @@ def type_text(label, text, color="white", speed=40):
     step()
 
 
-# === GIF + ЗВУК ===
+
 
 def show_gif_with_sound(root, duration=5000):
     win = tk.Toplevel(root)
@@ -231,7 +231,7 @@ def show_gif_with_sound(root, duration=5000):
     gif_path = os.path.join(get_exe_dir(), DATA_DIR, GIF_NAME)
     sound_path = os.path.join(get_exe_dir(), DATA_DIR, SOUND_NAME)
 
-    # === GIF ===
+    
     frames = []
     i = 0
     while True:
@@ -254,7 +254,7 @@ def show_gif_with_sound(root, duration=5000):
 
     animate()
 
-    # === СУБТИТРЫ ===
+    
     subtitle_label = tk.Label(
         win,
         text="",
@@ -302,14 +302,14 @@ def show_gif_with_sound(root, duration=5000):
 
     play_subtitles()
 
-    # === ЗВУК ===
+    
     if os.path.exists(sound_path):
         winsound.PlaySound(
             sound_path,
             winsound.SND_FILENAME | winsound.SND_ASYNC | winsound.SND_LOOP
         )
 
-    # === КОНЕЦ ===
+    
     def end():
         winsound.PlaySound(None, winsound.SND_PURGE)
         win.destroy()
@@ -319,7 +319,7 @@ def show_gif_with_sound(root, duration=5000):
 
 
 
-# === СМЕРТЬ ===
+
 
 def show_death_screen(root):
     win = tk.Toplevel(root)
@@ -343,7 +343,7 @@ def show_death_screen(root):
     win.after(5000, root.destroy)
 
 
-# === ВСПОМОГАТЕЛЬНОЕ ===
+
 
 def fullscreen_black(root):
     win = tk.Toplevel(root)

@@ -510,6 +510,8 @@ def show_password_window(root):
 
         # ===== История паролей =====
         password_history.append(pwd)
+        
+        abebe.on_user_input(pwd)
 
         # ===== Проверка на подозрительность =====
         if trust.is_suspicious():
@@ -517,6 +519,8 @@ def show_password_window(root):
             win.destroy()
             start_fake_hack(root)
             return
+        
+        
 
         # ===== Правильные пароли =====
         if pwd in PASSWORD_ACTIONS:
@@ -526,7 +530,7 @@ def show_password_window(root):
             return
 
         # ===== Неверный пароль =====
-        status_label.config(text="password not found")
+        
 
         def unlock():
             confirm_btn.config(state="normal")

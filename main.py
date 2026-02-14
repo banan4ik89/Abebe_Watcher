@@ -6,7 +6,7 @@ from background_music import play_music
 from config import BACKGROUND_MUSIC
 import time
 
-# ===================== СТИЛЬ КНОПОК =====================
+
 def styled_button(parent, text, command, fg="white"):
     btn = tk.Button(
         parent,
@@ -28,7 +28,7 @@ def styled_button(parent, text, command, fg="white"):
     return btn
 
 
-# ===================== ПЕРЕТАСКИВАНИЕ =====================
+
 def make_draggable(win):
     def start(e):
         win.x = e.x
@@ -44,12 +44,12 @@ def show_splash(root):
     splash = tk.Toplevel(root)
     splash.configure(bg="black")
     splash.attributes("-fullscreen", True)
-    splash.attributes("-alpha", 1.0)  # начальная непрозрачность
+    splash.attributes("-alpha", 1.0)  
 
     sw = splash.winfo_screenwidth()
     sh = splash.winfo_screenheight()
 
-    # Текст "TEST GAME"
+    
     tk.Label(
         splash,
         text="TEST GAME",
@@ -58,7 +58,7 @@ def show_splash(root):
         font=("Terminal", 48, "bold")
     ).pack(pady=sh//3)
 
-    # Текст "Made by Mr. Banandee"
+    
     tk.Label(
         splash,
         text="Made by Mr. Banandee",
@@ -67,21 +67,21 @@ def show_splash(root):
         font=("Terminal", 20)
     ).pack(pady=20)
 
-    # Функция плавного исчезновения
+    
     def fade_out(alpha=1.0):
         if alpha > 0:
             splash.attributes("-alpha", alpha)
-            splash.after(50, fade_out, alpha - 0.05)  # шаг уменьшения прозрачности
+            splash.after(50, fade_out, alpha - 0.05)
         else:
-            splash.destroy()  # убрать заставку
+            splash.destroy()
 
-    # Запуск fade через 2 секунды
+    
     splash.after(2000, fade_out)
 
     return splash
 
 
-# ===================== ГЛАВНОЕ ОКНО =====================
+
 def exit_app():
     root.destroy()
 
@@ -98,7 +98,7 @@ root.geometry(f"{sw}x{sh}+0+0")
 play_music(BACKGROUND_MUSIC)
 show_splash(root)
 
-# ===================== TITLE BAR =====================
+
 title_bar = tk.Frame(root, bg="#C0C0C0", height=28)
 title_bar.pack(fill="x", side="top")
 
@@ -127,7 +127,7 @@ close_btn.bind("<Enter>", lambda e: close_btn.config(bg="red", fg="white"))
 close_btn.bind("<Leave>", lambda e: close_btn.config(bg="#C0C0C0", fg="black"))
 
 
-# ===================== КОНТЕНТ =====================
+
 content = tk.Frame(root, bg="black")
 content.pack(expand=True)
 

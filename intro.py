@@ -10,10 +10,10 @@ from background_music import resume_music
 
 GIF_NAME = "abebehello.gif"
 SOUND_NAME = "abebehello.wav"
-DURATION = 37000  # 37 секунд
+DURATION = 37000
 
 
-# === СУБТИТРЫ ===
+
 SUBTITLES = [
     (0, "Hello, my friend."),
     (2500, "My name is Abebe, and I am your digital assistant in our organization."),
@@ -31,7 +31,7 @@ SUBTITLES = [
 ]
 
 
-# === ПЕЧАТЬ ===
+
 def type_text(label, text, color="white", speed=35):
     label.config(text="", fg=color)
     full_text = text + " █"
@@ -59,7 +59,7 @@ def show_intro(root):
     gif_path = os.path.join(get_exe_dir(), DATA_DIR, GIF_NAME)
     sound_path = os.path.join(get_exe_dir(), DATA_DIR, SOUND_NAME)
 
-    # ===================== TITLE BAR =====================
+    
     title_bar = tk.Frame(win, bg="#C0C0C0", height=28)
     title_bar.pack(fill="x", side="top")
 
@@ -71,14 +71,14 @@ def show_intro(root):
         font=("Terminal", 10)
     ).pack(side="left", padx=8, pady=4)
 
-    # === ОБЩИЙ ВЫХОД ИЗ ИНТРО ===
+    
     def close_intro():
         winsound.PlaySound(None, winsound.SND_PURGE)
         win.destroy()
-        resume_music()      # ← ВАЖНО: возвращаем фон
+        resume_music()
         root.deiconify()
 
-    # === КРЕСТИК ===
+    
     close_btn = tk.Label(
         title_bar,
         text=" ✕ ",
@@ -93,7 +93,7 @@ def show_intro(root):
     close_btn.bind("<Enter>", lambda e: close_btn.config(bg="red", fg="white"))
     close_btn.bind("<Leave>", lambda e: close_btn.config(bg="#C0C0C0", fg="black"))
 
-    # ===================== GIF =====================
+    
     frames = []
     i = 0
     while True:
@@ -114,7 +114,7 @@ def show_intro(root):
 
     animate()
 
-    # ===================== SUBTITLES =====================
+    
     subtitle_label = tk.Label(
         win,
         text="",
@@ -178,12 +178,12 @@ def show_intro(root):
 
     play_subtitles()
 
-    # ===================== SOUND =====================
+    
     if os.path.exists(sound_path):
         winsound.PlaySound(
             sound_path,
             winsound.SND_FILENAME | winsound.SND_ASYNC
         )
 
-    # === АВТОКОНЕЦ ===
+    
     win.after(DURATION, close_intro)

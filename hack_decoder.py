@@ -1,10 +1,10 @@
-# hack_decoder.py
+
 import tkinter as tk
 import random
 import string
 
 
-# ===== DRAG UTILITY =====
+
 def make_draggable(win, bar):
     def start(e):
         win.x = e.x
@@ -17,7 +17,7 @@ def make_draggable(win, bar):
     bar.bind("<B1-Motion>", move)
 
 
-# ===== MAIN WINDOW =====
+
 def show_hack_decoder(root, theme):
     win = tk.Toplevel(root)
     win.overrideredirect(True)
@@ -25,7 +25,7 @@ def show_hack_decoder(root, theme):
     win.attributes("-topmost", True)
     win.geometry("440x300+480+300")
 
-    # ===== TITLE BAR =====
+    
     title_bar = tk.Frame(win, bg="#C0C0C0", height=26)
     title_bar.pack(fill="x")
 
@@ -52,7 +52,7 @@ def show_hack_decoder(root, theme):
 
     make_draggable(win, title_bar)
 
-    # ===== CONTENT =====
+    
     content = tk.Frame(
         win,
         bg="black",
@@ -61,7 +61,7 @@ def show_hack_decoder(root, theme):
     )
     content.pack(expand=True, fill="both", padx=6, pady=6)
 
-    # ===== LOG AREA =====
+    
     log = tk.Text(
         content,
         bg="black",
@@ -74,11 +74,11 @@ def show_hack_decoder(root, theme):
     )
     log.pack(fill="both", expand=True, padx=10, pady=(10, 6))
 
-    # ===== BUTTON AREA =====
+    
     btn_frame = tk.Frame(content, bg="black")
     btn_frame.pack(fill="x", pady=(0, 8))
 
-    # ===== TEXT GENERATION =====
+    
     noise_chars = string.ascii_uppercase + string.digits + "#@$%"
     phrases = [
         "Initializing decoder module...",
@@ -113,7 +113,7 @@ def show_hack_decoder(root, theme):
 
     spam_text()
 
-    # ===== DECRYPT BUTTON =====
+    
     def decrypt():
         nonlocal running
         running = False
@@ -142,7 +142,7 @@ def show_hack_decoder(root, theme):
     )
     decrypt_btn.pack()
 
-    # ===== FINAL RESULT =====
+    
     def show_password_theme():
         write("")
         write("PASSWORD_THEME IDENTIFIED:")
